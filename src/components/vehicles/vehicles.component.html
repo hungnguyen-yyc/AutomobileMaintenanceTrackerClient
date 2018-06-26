@@ -12,6 +12,7 @@
   </mat-toolbar>
   <span style="color:red" *ngIf="error?.length > 10" [innerHTML]="error">
   </span>
+
 <mat-table [dataSource]="datasource" matSort class="mat-elevation-z8">
   <ng-container matColumnDef="select">
     <mat-header-cell *matHeaderCellDef>
@@ -26,6 +27,7 @@
 
   <ng-container matColumnDef="make">
     <mat-header-cell *matHeaderCellDef mat-sort-header> Make </mat-header-cell>
+    
     <mat-cell *matCellDef="let vehicle">
       <mat-form-field floatLabel="never">
         <input matInput placeholder="make" (change)="validate(vehicle)"  [(ngModel)]="vehicle.make">
@@ -81,3 +83,5 @@
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>

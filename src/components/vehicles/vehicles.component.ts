@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { VehiclesService } from './vehicles.service';
 import { VehicleModel, VehicleTypeEnum } from '../models/vehicle.model';
-import { MatTableDataSource, MatSort } from '@angular/material';
+import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
 
 @Component({
@@ -17,6 +17,7 @@ export class VehiclesComponent implements AfterViewInit {
   keys: any[];
   vehicleTypes = VehicleTypeEnum;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   error: string = "";
 
   constructor(private _serivce: VehiclesService) { 
@@ -25,7 +26,6 @@ export class VehiclesComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.getVehicles();
-    this.datasource.sort = this.sort;
   }
 
   getVehicles(){
@@ -33,7 +33,9 @@ export class VehiclesComponent implements AfterViewInit {
       this.vehicles = data;
       this.updateDatasource();
     },
-      error => console.log(error)
+      error => {
+        console.log(error);
+      }
     );
   }
 
@@ -116,5 +118,7 @@ export class VehiclesComponent implements AfterViewInit {
 
   updateDatasource(){
     this.datasource = new MatTableDataSource(this.vehicles);
+    this.datasource.sort = this.sort;
+    this.datasource.paginator = this.paginator;
   }
 }

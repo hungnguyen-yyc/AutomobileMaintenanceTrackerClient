@@ -1,3 +1,58 @@
-<p>
-  service-providers works!
-</p>
+
+<mat-form-field>
+  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+</mat-form-field>
+<mat-toolbar>
+    <mat-toolbar-row>
+      <span class="spacer"></span>
+      <button mat-raised-button color="basic" (click)="newProvider()">New</button>
+      <button mat-raised-button color="primary" (click)="saveProviders()">Save</button>
+      <button mat-raised-button color="warn" (click)="deleteProviders()">Delete</button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <span style="color:red" *ngIf="error?.length > 10" [innerHTML]="error">
+  </span>
+<mat-table [dataSource]="datasource" matSort class="mat-elevation-z8">
+  <ng-container matColumnDef="select">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+      </mat-checkbox>
+    </mat-header-cell>
+    <mat-cell mat-cell *matCellDef="let row">
+      <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+      </mat-checkbox>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="shop">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Shop Name </mat-header-cell>
+    <mat-cell *matCellDef="let provider">
+      <mat-form-field floatLabel="never">
+        <input matInput placeholder="shop" (change)="validate(provider)"  [(ngModel)]="provider.shop">
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="address">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Address </mat-header-cell>
+    <mat-cell *matCellDef="let provider">
+      <mat-form-field floatLabel="never">
+        <input matInput placeholder="address" (change)="validate(provider)"  [(ngModel)]="provider.address">
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="phone">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Phone </mat-header-cell>
+    <mat-cell *matCellDef="let provider">
+      <mat-form-field floatLabel="never">
+        <input matInput placeholder="phone" (change)="validate(provider)"  [(ngModel)]="provider.phone">
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
