@@ -1,0 +1,83 @@
+
+<mat-form-field>
+  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+</mat-form-field>
+<mat-toolbar>
+    <mat-toolbar-row>
+      <span class="spacer"></span>
+      <button mat-raised-button color="basic" (click)="newVehicle()">New</button>
+      <button mat-raised-button color="primary" (click)="saveVehicles()">Save</button>
+      <button mat-raised-button color="warn" (click)="deleteVehicles()">Delete</button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <span style="color:red" *ngIf="error?.length > 10" [innerHTML]="error">
+  </span>
+<mat-table [dataSource]="datasource" matSort class="mat-elevation-z8">
+  <ng-container matColumnDef="select">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+      </mat-checkbox>
+    </mat-header-cell>
+    <mat-cell mat-cell *matCellDef="let row">
+      <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+      </mat-checkbox>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="make">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Make </mat-header-cell>
+    <mat-cell *matCellDef="let vehicle">
+      <mat-form-field floatLabel="never">
+        <input matInput placeholder="make" (change)="validate(vehicle)"  [(ngModel)]="vehicle.make">
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="model">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Model </mat-header-cell>
+    <mat-cell *matCellDef="let vehicle">
+      <mat-form-field floatLabel="never">
+        <input matInput placeholder="model" (change)="validate(vehicle)"  [(ngModel)]="vehicle.model">
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="plate">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Plate </mat-header-cell>
+    <mat-cell *matCellDef="let vehicle">
+      <mat-form-field floatLabel="never">
+        <input matInput placeholder="plate" (change)="validate(vehicle)"  [(ngModel)]="vehicle.plate">
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="year">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Year </mat-header-cell>
+    <mat-cell *matCellDef="let vehicle">
+      <mat-form-field floatLabel="never">
+        <input matInput placeholder="year" (change)="validate(vehicle)" [(ngModel)]="vehicle.year">
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="odometer">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Odometer </mat-header-cell>
+      <mat-cell *matCellDef="let vehicle">
+        <mat-form-field floatLabel="never">
+          <input matInput placeholder="year" (change)="validate(vehicle)" [(ngModel)]="vehicle.odometer">
+        </mat-form-field>
+      </mat-cell>
+    </ng-container>
+
+  <ng-container matColumnDef="type">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Type </mat-header-cell>
+    <mat-cell *matCellDef="let vehicle"> 
+      <select [(ngModel)]="vehicle.type" class="vehicle-type-select">
+        <option *ngFor="let key of keys" [value]="key">{{vehicleTypes[key]}}</option>
+      </select>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
