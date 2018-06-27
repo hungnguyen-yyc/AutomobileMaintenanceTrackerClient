@@ -12,7 +12,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 })
 export class ServiceProvidersComponent implements AfterViewInit {
 
-  displayedColumns = ['select', 'shop', 'address', 'phone'];
+  displayedColumns = ['select', 'name', 'address', 'phone'];
   datasource = new MatTableDataSource();
   providers: ServiceProviderModel[];
   keys: any[];
@@ -32,7 +32,7 @@ export class ServiceProvidersComponent implements AfterViewInit {
       this.updateDatasource();
     },
       error => {
-        console.log(error);
+        this.error = error;
       }
     );
   }
@@ -45,9 +45,11 @@ export class ServiceProvidersComponent implements AfterViewInit {
       }
       this._serivce.deleteProvider(item.id).subscribe(
         data => {
-          console.log(data);
+          if((<any>data).isError){
+            this.error = (<any>data).message;
+          }
         },
-        error => console.log(error)
+        error => this.error = error
       );
     });
     this.updateDatasource();
@@ -58,9 +60,11 @@ export class ServiceProvidersComponent implements AfterViewInit {
       if((<ServiceProviderModel>provider).id != null && (<ServiceProviderModel>provider).id != undefined){
         this._serivce.updateProvider(<ServiceProviderModel>provider).subscribe(
           data => {
-            console.log(data);
+            if((<any>data).isError){
+              this.error = (<any>data).message;
+            }
           },
-          error => console.log(error)
+          error => this.error = error
         );
       }
       else {
@@ -68,7 +72,7 @@ export class ServiceProvidersComponent implements AfterViewInit {
           data => {
             console.log(data);
           },
-          error => console.log(error)
+          error => this.error = error
         );
       }
     });
@@ -85,7 +89,7 @@ export class ServiceProvidersComponent implements AfterViewInit {
   validate(obj:any){
     let provider = new ServiceProviderModel();
     provider.address = obj.address;
-    provider.shop = obj.shop;
+    provider.name = obj.name;
     provider.phone = obj.phone;
     this.error = provider.validate();
   }

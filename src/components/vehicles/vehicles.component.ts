@@ -34,7 +34,7 @@ export class VehiclesComponent implements AfterViewInit {
       this.updateDatasource();
     },
       error => {
-        console.log(error);
+        this.error = error;
       }
     );
   }
@@ -47,9 +47,11 @@ export class VehiclesComponent implements AfterViewInit {
       }
       this._serivce.deleteVehicle(item.id).subscribe(
         data => {
-          console.log(data);
+          if((<any>data).isError){
+            this.error = (<any>data).message;
+          }
         },
-        error => console.log(error)
+        error => this.error = error
       );
     });
     this.updateDatasource();
@@ -60,7 +62,9 @@ export class VehiclesComponent implements AfterViewInit {
       if((<VehicleModel>vehicle).id != null && (<VehicleModel>vehicle).id != undefined){
         this._serivce.updateVehicle(<VehicleModel>vehicle).subscribe(
           data => {
-            console.log(data);
+            if((<any>data).isError){
+              this.error = (<any>data).message;
+            }
           },
           error => console.log(error)
         );
@@ -68,7 +72,9 @@ export class VehiclesComponent implements AfterViewInit {
       else {
         this._serivce.saveVehicle(<VehicleModel>vehicle).subscribe(
           data => {
-            console.log(data);
+            if((<any>data).isError){
+              this.error = (<any>data).message;
+            }
           },
           error => console.log(error)
         );

@@ -1,6 +1,6 @@
 export class ServiceProviderModel {
 
-    public shop: string;
+    public name: string;
     public address: string;
     public phone: string;
     public id: string;
@@ -8,13 +8,13 @@ export class ServiceProviderModel {
 
     validate():string{
         var error = "";
-        if (this.shop == undefined || this.shop.length === 0){
+        if (this.name == undefined || this.name.trim().length === 0){
             error += "Invalid Shop<br>";
         }
-        if (this.address == undefined || this.address.length === 0){
-            error += "Invalid Name<br>";
+        if (this.address == undefined || this.address.trim().length === 0){
+            error += "Invalid Address<br>";
         }
-        if (this.phone == undefined || this.phone.length === 0){
+        if (this.phone == undefined || this.phone.trim().length === 0){
             error += "Invalid Phone<br>";
         }
         return error;

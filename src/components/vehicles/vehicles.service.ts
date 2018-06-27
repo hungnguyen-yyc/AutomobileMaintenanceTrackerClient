@@ -12,7 +12,7 @@ export class VehiclesService {
     private BASE_URL: string = "http://localhost:3000/api/vehicles";//"https://amtapi20180626012727.azurewebsites.net/api/vehicles";
     private httpOptions = {
         headers: new HttpHeaders({
-          'Content-Type':  'application/json'
+          'Content-Type':  'application/json',
         })
       };
 

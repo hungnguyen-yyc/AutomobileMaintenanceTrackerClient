@@ -21,14 +21,14 @@ export class ServiceProvidersService {
         return this._httpClient.get<ServiceProviderModel[]>(this.BASE_URL);
     }
 
-    saveProvider(vehicle: ServiceProviderModel)
+    saveProvider(provider: ServiceProviderModel)
     {
-        return this._httpClient.post(this.BASE_URL, vehicle, this.httpOptions);
+        return this._httpClient.post(this.BASE_URL, provider, this.httpOptions);
     }
 
-    updateProvider(vehicle: ServiceProviderModel)
+    updateProvider(provider: ServiceProviderModel)
     {
-        return this._httpClient.put(this.BASE_URL, vehicle, this.httpOptions);
+        return this._httpClient.put(this.BASE_URL, provider, this.httpOptions);
     }
 
     deleteProvider(id: string)

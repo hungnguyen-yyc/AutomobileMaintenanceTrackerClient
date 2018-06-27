@@ -24,11 +24,11 @@
     </mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="shop">
+  <ng-container matColumnDef="name">
     <mat-header-cell *matHeaderCellDef mat-sort-header> Shop Name </mat-header-cell>
     <mat-cell *matCellDef="let provider">
       <mat-form-field floatLabel="never">
-        <input matInput placeholder="shop" (change)="validate(provider)"  [(ngModel)]="provider.shop">
+        <input matInput placeholder="shop name" (change)="validate(provider)"  [(ngModel)]="provider.name">
       </mat-form-field>
     </mat-cell>
   </ng-container>
