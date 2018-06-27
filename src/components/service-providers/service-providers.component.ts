@@ -81,7 +81,7 @@ export class ServiceProvidersComponent implements AfterViewInit {
   newProvider(){
     if(this.error.trim().length > 0) return;
     var provider = new ServiceProviderModel();
-    this.providers.push(provider);
+    this.providers.splice(0, 0, provider);
     this.error = provider.validate();
     this.updateDatasource();
   }

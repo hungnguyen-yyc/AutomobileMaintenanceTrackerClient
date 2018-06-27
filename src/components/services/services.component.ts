@@ -44,7 +44,7 @@ export class ServicesComponent implements AfterViewInit {
       }
     },
       error => {
-        this.error = error;
+        console.log(error);
       }
     );
   }
@@ -58,7 +58,7 @@ export class ServicesComponent implements AfterViewInit {
       }
     },
       error => {
-        this.error = error;
+        console.log(error);
       }
     );
   }
@@ -71,7 +71,7 @@ export class ServicesComponent implements AfterViewInit {
       }
     },
       error => {
-        this.error = error;
+        console.log(error);
       }
     );
   }
@@ -88,7 +88,7 @@ export class ServicesComponent implements AfterViewInit {
             this.error = (<any>data).message;
           }
         },
-        error => this.error = error
+        error => console.log(error)
       );
     });
     this.updateDatasource();
@@ -104,7 +104,7 @@ export class ServicesComponent implements AfterViewInit {
               this.error = (<any>data).message;
             }
           },
-          error => this.error = error
+          error => console.log(error)
         );
       }
       else {
@@ -114,7 +114,7 @@ export class ServicesComponent implements AfterViewInit {
               this.error = (<any>data).message;
             }
           },
-          error => this.error = error
+          error => console.log(error)
         );
       }
     });
@@ -130,7 +130,7 @@ export class ServicesComponent implements AfterViewInit {
     service.provider = this.providers[0].id;
     service.vehicle = this.vehicles[0].id;
     service.type = MaintenanceTypeEnum.BrakeChange;
-    this.services.push(service);
+    this.services.splice(0, 0, service);
     this.error = service.validate();
     this.updateDatasource();
   }

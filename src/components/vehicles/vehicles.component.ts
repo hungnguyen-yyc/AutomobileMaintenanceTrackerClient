@@ -86,7 +86,7 @@ export class VehiclesComponent implements AfterViewInit {
     if(this.error.trim().length > 0) return;
     var vehicle = new VehicleModel();
     vehicle.type = VehicleTypeEnum.Electric;
-    this.vehicles.push(vehicle);
+    this.vehicles.splice(0, 0, vehicle);
     this.error = vehicle.validate();
     this.updateDatasource();
   }
