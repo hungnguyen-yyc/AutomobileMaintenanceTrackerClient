@@ -9,14 +9,6 @@ import { PageNotFoundComponent } from '../components/page-not-found/page-not-fou
 const routes: Routes = [
   { path: '', redirectTo: '/vehicles', pathMatch: 'full' },
   { path: 'vehicles', component: VehiclesComponent },
-  /*{ 
-    path: 'departments/:id', 
-    component: DepartmentDetailComponent,
-    children: [
-      { path: 'overview', component: DepartmentOverviewComponent},
-      { path: 'contact', component: DepartmentContactComponent}
-    ]
-   },*/
   { path: 'services', component: ServicesComponent },
   { path: 'providers', component: ServiceProvidersComponent},
   { path: '**',   component: PageNotFoundComponent }
@@ -24,7 +16,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {useHash: true})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
