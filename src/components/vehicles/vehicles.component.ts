@@ -19,6 +19,7 @@ export class VehiclesComponent implements AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   error: string = "";
+  isLoadingResults = false;
 
   constructor(private _serivce: VehiclesService) { 
     this.keys = Object.keys(this.vehicleTypes).filter(Number);
@@ -29,29 +30,38 @@ export class VehiclesComponent implements AfterViewInit {
   }
 
   getVehicles(){
+    this.isLoadingResults = true;
     this._serivce.getVehicles().subscribe((data: VehicleModel[]) => {
       this.vehicles = data;
       this.updateDatasource();
+      this.isLoadingResults = false;
     },
       error => {
         this.error = error;
+        this.isLoadingResults = false;
       }
     );
   }
 
   deleteVehicles(){
+    this.isLoadingResults = true;
     this.selection.selected.forEach(item => {
-      var index = this.vehicles.indexOf(item, 0);
-      if (index > -1) {
-        this.vehicles.splice(index, 1);
-      }
       this._serivce.deleteVehicle(item.id).subscribe(
         data => {
           if((<any>data).isError){
             this.error = (<any>data).message;
+          }else{
+            var index = this.vehicles.indexOf(item, 0);
+            if (index > -1) {
+              this.vehicles.splice(index, 1);
+            }
           }
+          this.isLoadingResults = false;
         },
-        error => this.error = error
+        error => { 
+          this.error = error; 
+          this.isLoadingResults = false;
+        }
       );
     });
     this.updateDatasource();
@@ -65,8 +75,12 @@ export class VehiclesComponent implements AfterViewInit {
             if((<any>data).isError){
               this.error = (<any>data).message;
             }
+            this.isLoadingResults = false;
           },
-          error => console.log(error)
+          error => { 
+            this.error = error; 
+            this.isLoadingResults = false;
+          }
         );
       }
       else {
@@ -75,8 +89,12 @@ export class VehiclesComponent implements AfterViewInit {
             if((<any>data).isError){
               this.error = (<any>data).message;
             }
+            this.isLoadingResults = false;
           },
-          error => console.log(error)
+          error => { 
+            this.error = error; 
+            this.isLoadingResults = false;
+          }
         );
       }
     });

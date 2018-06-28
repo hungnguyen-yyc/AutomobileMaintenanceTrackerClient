@@ -19,6 +19,7 @@ export class ServiceProvidersComponent implements AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   error: string = "";
+  isLoadingResults = false;
 
   constructor(private _serivce: ServiceProvidersService) { }
 
@@ -27,35 +28,47 @@ export class ServiceProvidersComponent implements AfterViewInit {
   }
 
   getProviders(){
+    this.isLoadingResults = true;
     this._serivce.getProviders().subscribe((data: ServiceProviderModel[]) => {
       this.providers = data;
       this.updateDatasource();
+      this.isLoadingResults = false;
     },
       error => {
         this.error = error;
+        this.isLoadingResults = false;
       }
     );
   }
 
   deleteProviders(){
+    this.isLoadingResults = true;
     this.selection.selected.forEach(item => {
-      var index = this.providers.indexOf(item, 0);
-      if (index > -1) {
-        this.providers.splice(index, 1);
-      }
       this._serivce.deleteProvider(item.id).subscribe(
         data => {
           if((<any>data).isError){
             this.error = (<any>data).message;
           }
+          else
+          {
+            var index = this.providers.indexOf(item, 0);
+            if (index > -1) {
+              this.providers.splice(index, 1);
+            }
+          }
+          this.isLoadingResults = false;
         },
-        error => this.error = error
+        error => { 
+          this.error = error; 
+          this.isLoadingResults = false;
+        }
       );
     });
     this.updateDatasource();
   }
 
   saveProviders(){
+    this.isLoadingResults = true;
     this.datasource.data.forEach(provider => {
       if((<ServiceProviderModel>provider).id != null && (<ServiceProviderModel>provider).id != undefined){
         this._serivce.updateProvider(<ServiceProviderModel>provider).subscribe(
@@ -63,16 +76,24 @@ export class ServiceProvidersComponent implements AfterViewInit {
             if((<any>data).isError){
               this.error = (<any>data).message;
             }
+            this.isLoadingResults = false;
           },
-          error => this.error = error
+          error => { 
+            this.error = error; 
+            this.isLoadingResults = false;
+          }
         );
       }
       else {
         this._serivce.saveProvider(<ServiceProviderModel>provider).subscribe(
           data => {
             console.log(data);
+            this.isLoadingResults = false;
           },
-          error => this.error = error
+          error => { 
+            this.error = error; 
+            this.isLoadingResults = false;
+          }
         );
       }
     });

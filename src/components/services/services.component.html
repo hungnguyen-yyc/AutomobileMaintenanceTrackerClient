@@ -11,8 +11,11 @@
     </mat-toolbar-row>
   </mat-toolbar>
   <span style="color:red" *ngIf="error?.length > 10" [innerHTML]="error">
-  </span>
+</span>
 
+<div class="loading-shade" *ngIf="isLoadingResults">
+  <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+</div>
 <mat-table [dataSource]="datasource" matSort class="mat-elevation-z8">
   <ng-container matColumnDef="select">
     <mat-header-cell *matHeaderCellDef>

@@ -25,6 +25,7 @@ export class ServicesComponent implements AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   error: string = "";
+  isLoadingResults = false;
 
   constructor(private _serivce: ServicesService, private _providerService: ServiceProvidersService, private _vehicleService: VehiclesService) { 
     this.keys = Object.keys(this.serviceTypes).filter(Number);
@@ -36,47 +37,57 @@ export class ServicesComponent implements AfterViewInit {
   }
 
   getProviders(){
+    this.isLoadingResults = true;
     this._providerService.getProviders().subscribe((data: ServiceProviderModel[]) => {
       if(data != null){
         this.providers = data;
         this.updateDatasource();
         this.getVehicles();
-      }
+      };
+      this.isLoadingResults = false;
     },
       error => {
         console.log(error);
+        this.isLoadingResults = false;
       }
     );
   }
 
   getVehicles(){
+    this.isLoadingResults = false;
     this._vehicleService.getVehicles().subscribe((data: VehicleModel[]) => {
       if(data != null){
         this.vehicles = data;
         this.updateDatasource();
         this.getServices();
       }
+      this.isLoadingResults = true;
     },
       error => {
         console.log(error);
+        this.isLoadingResults = true;
       }
     );
   }
 
   getServices(){
+    this.isLoadingResults = true;
     this._serivce.getServices().subscribe((data: ServiceModel[]) => {
       if(data != null){
         this.services = data;
         this.updateDatasource();
       }
+      this.isLoadingResults = false;
     },
       error => {
         console.log(error);
+        this.isLoadingResults = false;
       }
     );
   }
 
   deleteServices(){
+    this.isLoadingResults = true;
     this.selection.selected.forEach(item => {
       var index = this.services.indexOf(item, 0);
       if (index > -1) {
@@ -87,8 +98,12 @@ export class ServicesComponent implements AfterViewInit {
           if((<any>data).isError){
             this.error = (<any>data).message;
           }
+          this.isLoadingResults = false;
         },
-        error => console.log(error)
+        error => {
+          console.log(error);
+          this.isLoadingResults = false;
+        }
       );
     });
     this.updateDatasource();
@@ -96,6 +111,7 @@ export class ServicesComponent implements AfterViewInit {
 
   saveServices(){
     if(this.error.trim().length > 0) return;
+    this.isLoadingResults = true;
     this.datasource.data.forEach(service => {
       if((<ServiceModel>service).id != null && (<ServiceModel>service).id != undefined){
         this._serivce.updateService(<ServiceModel>service).subscribe(
@@ -103,8 +119,12 @@ export class ServicesComponent implements AfterViewInit {
             if((<any>data).isError){
               this.error = (<any>data).message;
             }
+            this.isLoadingResults = false;
           },
-          error => console.log(error)
+          error => {
+            console.log(error);
+            this.isLoadingResults = false;
+          }
         );
       }
       else {
@@ -113,8 +133,12 @@ export class ServicesComponent implements AfterViewInit {
             if((<any>data).isError){
               this.error = (<any>data).message;
             }
+            this.isLoadingResults = false;
           },
-          error => console.log(error)
+          error => {
+            console.log(error);
+            this.isLoadingResults = false;
+          }
         );
       }
     });
