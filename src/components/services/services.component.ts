@@ -89,14 +89,18 @@ export class ServicesComponent implements AfterViewInit {
   deleteServices(){
     this.isLoadingResults = true;
     this.selection.selected.forEach(item => {
-      var index = this.services.indexOf(item, 0);
-      if (index > -1) {
-        this.services.splice(index, 1);
-      }
       this._serivce.deleteService(item.id).subscribe(
         data => {
           if((<any>data).isError){
             this.error = (<any>data).message;
+          }
+          else
+          {
+            var index = this.services.indexOf(item, 0);
+            if (index > -1) {
+              this.services.splice(index, 1);
+              this.updateDatasource();
+            }
           }
           this.isLoadingResults = false;
         },
@@ -106,7 +110,6 @@ export class ServicesComponent implements AfterViewInit {
         }
       );
     });
-    this.updateDatasource();
   }
 
   saveServices(){

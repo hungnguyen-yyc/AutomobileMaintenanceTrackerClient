@@ -54,6 +54,7 @@ export class ServiceProvidersComponent implements AfterViewInit {
             var index = this.providers.indexOf(item, 0);
             if (index > -1) {
               this.providers.splice(index, 1);
+              this.updateDatasource();
             }
           }
           this.isLoadingResults = false;
@@ -64,7 +65,6 @@ export class ServiceProvidersComponent implements AfterViewInit {
         }
       );
     });
-    this.updateDatasource();
   }
 
   saveProviders(){
