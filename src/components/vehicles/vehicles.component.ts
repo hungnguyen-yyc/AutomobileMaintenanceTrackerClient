@@ -20,6 +20,7 @@ export class VehiclesComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   error: string = "";
   isLoadingResults = false;
+  isCreating = false;
 
   constructor(private _serivce: VehiclesService) { 
     this.keys = Object.keys(this.vehicleTypes).filter(Number);
@@ -98,10 +99,12 @@ export class VehiclesComponent implements AfterViewInit {
         );
       }
     });
+    this.isCreating = false;
   }
 
   newVehicle(){
     if(this.error.trim().length > 0) return;
+    this.isCreating = true;
     var vehicle = new VehicleModel();
     vehicle.type = VehicleTypeEnum.Electric;
     this.vehicles.splice(0, 0, vehicle);
@@ -144,5 +147,12 @@ export class VehiclesComponent implements AfterViewInit {
     this.datasource = new MatTableDataSource(this.vehicles);
     this.datasource.sort = this.sort;
     this.datasource.paginator = this.paginator;
+  }
+
+  cancelNewVehicle(){
+    this.vehicles.splice(0, 1);
+    this.isCreating = false;
+    this.error = "";
+    this.updateDatasource();
   }
 }
