@@ -55,6 +55,7 @@ export class VehiclesComponent implements AfterViewInit {
             var index = this.vehicles.indexOf(item, 0);
             if (index > -1) {
               this.vehicles.splice(index, 1);
+              this.updateDatasource();
             }
           }
           this.isLoadingResults = false;
@@ -65,7 +66,6 @@ export class VehiclesComponent implements AfterViewInit {
         }
       );
     });
-    this.updateDatasource();
   }
 
   saveVehicles(){
